@@ -85,25 +85,29 @@ balance = binance.fetch_balance()
 #count = 0
 wallet = []
 
-token = 'xoxb-1803312053650-1803316179538-RdYSfXZjfyEvrkwtv2KRVucC'
+token = 'xoxb-1803312053650-1803316179538-YGarDi1jwpfHuZam2OaoVp4C'
 channel_id = "C01PTELKWAG"
 client = WebClient(token=token)
 
 
-SEEDMONEY = balance['BTC']['total']
+BTC = balance['BTC']['total']
+ETH = balance['ETH']['total']
 MinCoinNum = market['ETH/BTC']['limits']['amount']['min'] * 6 ##?? 살 수 있는데 왜 못 사는거니 ㅠㅠㅠㅠ
-#binance.create_market_sell_order('ETH/BTC', 0.024)
-print("SEEDMONEY:", f(SEEDMONEY, 4))
-print("살 수있는 최소 코인 갯수", MinCoinNum)
+#binance.create_market_buy_order('ETH/BTC', 0.001)
+#binance.create_market_sell_order('ETH/BTC', 0.009)
 #binance.create_market_buy_order('ETH/BTC', 0.006)
+print("BTC :", f(BTC, 4), "\nETH:", f(ETH, 4))
 
+response = client.chat_postMessage(
+                        channel=channel_id,
+                        text="안녕 승호야"
+                    )
 
-
-ohlcvs = binance.fetch_ohlcv('ETH/BTC', '1m', limit=20)
-while True:
+ohlcvs = binance.fetch_ohlcv('ETH/BTC', '1m', limit=65)
+while False:
     current_price = ohlcvs[-1][4]
     current_volume = ohlcvs[-1][5]
-    volume_average = sum([ohlc[5] for ohlc in ohlcvs[-15:]]) / len(ohlcvs[-15:])
+    volume_average = sum([ohlc[5] for ohlc in ohlcvs[-60:]]) / len(ohlcvs[-60:])
 
     if len(wallet) != 0:
         for price in wallet:
